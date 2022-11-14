@@ -1,7 +1,7 @@
- const asyncHandler = require("express-async-handler")
- const User = require("../models/user.model")
- const bcrypt = require("bcrypt")
- const jwt = require("jsonwebtoken")
+ const asyncHandler = require("express-async-handler");
+ const User = require("../models/user.model");
+ const bcrypt = require("bcrypt");
+ const jwt = require("jsonwebtoken");
  
 
  const generateToken = (id) => {
@@ -46,6 +46,17 @@
 
     // GENERATE TOKEN
     const token = generateToken(user._id)
+
+
+
+    // SEND HTTP COOKIE
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), //1 day
+      sameSite: "none",
+      secure: true
+    })
 
         if (user) {
             const {_id, name, email, photo, phone, bio} = user
