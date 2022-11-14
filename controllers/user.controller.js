@@ -91,9 +91,9 @@
       }
 
       // To check if user exists
-      const user = await UserfindOne({email})
+      const user = await User.findOne({ email })
 
-      if (!email || !password) {
+      if (!user) {
         res.status(400);
         throw new Error("Account does not exist")
       }
