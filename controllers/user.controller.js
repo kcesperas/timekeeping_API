@@ -101,6 +101,20 @@
       // To check if password is correct
       const passwordIsCorrect = await bcrypt.compare(password, user.password)
 
+    // GENERATE TOKEN
+    const token = generateToken(user._id)
+
+
+
+    // SEND HTTP COOKIE
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), //1 day
+      sameSite: "none",
+      secure: true
+    })
+
       if (user && passwordIsCorrect) {
                const {_id, name, email, photo, phone, bio} = user
             res.status(200).json({
@@ -109,7 +123,8 @@
                 email, 
                 photo, 
                 phone, 
-                bio
+                bio,
+                token
         });
       } else {
         res.status(400);
@@ -120,7 +135,34 @@
 
     });
 
+
+    //LOGOUT USER
+    const logout = asyncHandler (async (req, res) => {
+     res.cookie("token", "", {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(0), //1 day
+      sameSite: "none",
+      secure: true,
+    });
+    return res.status(200).json({message: "logged out succesfully"})
+
+});
+
+
+    //GET USER DATA
+    const getUser = asyncHandler (async (req, res) => {
+      res.send("User")
+    });
+
+
+
+    
+
+
  module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logout,
+    getUser,
 }
