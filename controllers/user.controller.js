@@ -202,13 +202,15 @@
           user.photo = req.body.photo || photo;
 
           const updatedUser = await user.save()
-            res.status(200).json({
+            res.status(200).json({ 
+                message: "ACCOUNT UPDATED SUCCESFULLY",
                 _id: updatedUser._id,
                 name: updatedUser.name,
                 email: updatedUser.email,
                 photo: updatedUser.photo,
                 phone: updatedUser.phone,
                 bio: updatedUser.bio,
+
         })
         } else {
           res.status(404)
@@ -217,7 +219,44 @@
       
 
     
-  })
+  });
+
+
+
+      //CHANGE PASSWORD
+      const changePassword = asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        const {oldPassword, password} = req.body
+
+        if(!user) {
+          res.status(400);
+          throw new Error("Account not found");
+        }
+
+      //Validate
+      if(!oldPassword || !password) {
+        res.status(400);
+        throw new Error("Please add current and new password")
+      }
+
+      // To check if password is correct
+      const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password)
+
+      // Save new Password
+
+      if (user && passwordIsCorrect) {
+        user.password = password
+        await user.save()
+        res.status(200).send("password updated succesfully")
+      } else {
+        res.status(400);
+        throw new Error("Old password is incorrect")
+      }
+      });
+
+      const forgotPassword = asyncHandler (async (req, res) => {
+        res.send("forgot password")
+      })
 
     
 
@@ -228,5 +267,7 @@
     logout,
     getUser,
     loginStatus,
-    updateUser
+    updateUser,
+    changePassword,
+    forgotPassword
 }
