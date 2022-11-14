@@ -3,6 +3,8 @@
  const bcrypt = require("bcrypt");
  const jwt = require("jsonwebtoken");
  
+ const Token = require("../models/token.model");
+ const crypto = require("crypto");
 
  const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "1d"})
@@ -255,7 +257,40 @@
       });
 
       const forgotPassword = asyncHandler (async (req, res) => {
-        res.send("forgot password")
+        const {email} = req.body
+        const user = await User.findOne({email})
+
+        if (!user) {
+          res.status(404);
+          throw new Error("User does not exist")
+        }
+
+        //Create Forgot password token
+        let resetToken = crypto.randomBytes(32).toString("hex") + user._id
+
+        //Hash token before saving to DB
+        const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex")
+
+     
+        // SAVE TOKEN TO DB
+        await new Token({
+          userId: user._id,
+          token: hashedToken,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 30 * (60 * 1000) //Thirty minutes
+        }).save()
+
+
+        //Construct Reset Url
+        const resetUrl = `${process.env.FRONTEND_URL}`        
+
+
+        res.send("forgot password");
+
+
       })
 
     
