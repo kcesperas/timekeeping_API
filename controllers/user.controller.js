@@ -81,7 +81,43 @@
 
     //LOGIN USER
     const loginUser = asyncHandler( async (req, res) => {
-      res.send("logged in")
+      
+      const{email, password} = req.body
+
+      //Validate Request 
+      if (!email || !password) {
+        res.status(400);
+        throw new Error("Incorrect email or password")
+      }
+
+      // To check if user exists
+      const user = await UserfindOne({email})
+
+      if (!email || !password) {
+        res.status(400);
+        throw new Error("Account does not exist")
+      }
+
+      // To check if password is correct
+      const passwordIsCorrect = await bcrypt.compare(password, user.password)
+
+      if (user && passwordIsCorrect) {
+               const {_id, name, email, photo, phone, bio} = user
+            res.status(200).json({
+                _id, 
+                name, 
+                email, 
+                photo, 
+                phone, 
+                bio
+        });
+      } else {
+        res.status(400);
+        throw new Error("Invalid email or password")
+      }
+
+
+
     });
 
  module.exports = {
