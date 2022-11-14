@@ -285,13 +285,36 @@
 
 
         //Construct Reset Url
-        const resetUrl = `${process.env.FRONTEND_URL}`        
+        const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`
 
 
-        res.send("forgot password");
+        // Reset Email
+        const message = `
+          <h2> Hello ${user.name} </h2>
+          <p> Please use the url below </p>
+          <p> This reset link is only valid for 30 minutes </p>
+
+          <a href=${resetUrl} clicktracking=off> ${resetUrl}</a>
+
+          <p>Best Regards</p>
+          <p>BT Dev </p>
+        `;
+
+        const subject = "Password Reset Request"
+        send_to = user.email
+        sent_from = process.env.EMAIL_USER
 
 
-      })
+
+        try {
+            await sendEmail(subject, message, send_to, sent_from);
+            res.status(200).json({success: true, message: "reset email sent"});
+        } catch (err) {
+            res.status(500);
+            throw new Error("Email not sent please try again")
+        }   
+      
+});
 
     
 
