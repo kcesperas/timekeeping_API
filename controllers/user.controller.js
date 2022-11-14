@@ -8,6 +8,7 @@
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "1d"})
  }
 
+    //REGISTER USER
 
  const registerUser = asyncHandler ( async (req, res) => {
       const {name, email, password} = req.body
@@ -77,93 +78,11 @@
  });
 
 
-  const isPasswordLength = (string, val) => {
-        if (String(string).length < val ) return true;
-        else return false;
-    };
 
-
-
-
-
-    //LOGIN DATA VALIDATION
-  const validateLoginData = (data) => {
-    let errors = {};
-  
-  
-
-    if (isPasswordLength(data.password, 8)) errors.password = 'Password must be 8 characters';
-    
-  
-  
-    return {
-      errors,
-      valid: Object.keys(errors).length === 0 ? true : false
-    };
-  };    
-  
-    //USER DATA VALIDATION
-const validateUserData = (data) => {
-  let errors = {};
-
-  if (isEmpty(data.email_address)) errors.email_address = 'email must not be empty';
-
-  if (isEmpty(data.password)) errors.password = 'password must not be empty';
-        
-  return {
-    errors,
-    valid: Object.keys(errors).length === 0 ? true : false
-  };
-};
-
-
-
-  const loginUser = asyncHandler ( async (req, res) => {
-
-  let { valid, errors } = validateLoginData(req.body);
-  if(!valid) return res.status(404).json({ message: { text: 'Something went wrong!', type: 'error' }, errors });
-
-   User.findOne({
-    username: req.body.email
-  })
-   
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-      if (!user) {
-        return res.status(404).send({ message: { text: "User Not found.", type: 'warning'} });
-      }
-      var passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: { text: "Invalid Password!", type: 'error'}
-        });
-      }
-      var jwt = ({ id: user.id }, process.env.JWT_TOKEN, {
-        expiresIn: "1d"
-      });
-
-      res.status(200).send({
-        id: user._id,
-        name: user.name,
-        email_address: user.email,
-        accessToken: jwt,
-        photo: user.photo,
-        phone: user.phone,
-        bio: user.bio
-      });
+    //LOGIN USER
+    const loginUser = asyncHandler( async (req, res) => {
+      res.send("logged in")
     });
-});
-
-  
-
-
 
  module.exports = {
     registerUser,
