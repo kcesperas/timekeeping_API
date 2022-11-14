@@ -266,6 +266,14 @@
           throw new Error("User does not exist")
         }
 
+
+        //DELETE EXISTING TOKENS IN DB
+        let token = await Token.findOne({userId: user._id})
+        if (token) {
+          await token.deleteOne()
+        }
+
+
         //Create Forgot password token
         let resetToken = crypto.randomBytes(32).toString("hex") + user._id
 
