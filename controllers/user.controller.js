@@ -2,6 +2,7 @@
  const User = require("../models/user.model");
  const bcrypt = require("bcrypt");
  const jwt = require("jsonwebtoken");
+ const emailSender = require("../utils/emailSender")
  
  const Token = require("../models/token.model");
  const crypto = require("crypto");
@@ -307,11 +308,12 @@
 
 
         try {
-            await sendEmail(subject, message, send_to, sent_from);
+            await emailSender(subject, message, send_to, sent_from);
             res.status(200).json({success: true, message: "reset email sent"});
         } catch (err) {
+          console.log(err)
             res.status(500);
-            throw new Error("Email not sent please try again")
+            throw new Error("Email is not sent please try again")
         }   
       
 });
