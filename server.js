@@ -3,7 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const userRoute = require ("./routes/user.route");
+const userRoute = require ("./routes/user.routes");
+const roleRoute = require ("./routes/role.routes")
 const errorHandler = require("./middleware/errorHandler");
 const cookieParser = require("cookie-parser");
 
@@ -29,10 +30,13 @@ app.use(errorHandler);
 
 //router middleware
 app.use("/api/users", userRoute);
+app.use("/api/roles", roleRoute);
+
+
+
 
  
 const PORT = process.env.PORT || 5000;
-
 // DB CONNECTION
 mongoose
     .connect(process.env.MONGO_URI)
@@ -41,4 +45,4 @@ mongoose
             console.log(`Server running on port ${PORT}`)
         })
     })
-    .catch((err) => console.log(err))
+    

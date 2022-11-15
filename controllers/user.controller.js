@@ -11,12 +11,12 @@
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "1d"})
  }
 
-    //REGISTER USER
+    //create USER
 
- const registerUser = asyncHandler ( async (req, res) => {
-      const {name, email, password} = req.body
+ const createUser = asyncHandler ( async (req, res) => {
+      const {first_name, last_name, email, password} = req.body
       //validation
-      if (!name || !email || !password) {     
+      if (!first_name ||!last_name || !email || !password) {     
       res.status(400)
       throw new Error("Please fill in all required fields")
   }
@@ -42,7 +42,8 @@
 
     // CREATE USER
     const user = await User.create({
-        name,
+        first_name,
+        last_name,
         email, 
         password
     });;
@@ -63,15 +64,14 @@
     })
 
         if (user) {
-            const {_id, name, email, photo, phone, bio} = user
+            const {_id, first_name, last_name, email, notes} = user
             res.status(201).json({
                 _id, 
-                name, 
+                first_name, 
+                last_name,
                 email, 
-                photo, 
-                phone, 
-                bio,
-                token,
+                notes,
+                token
         })
         }else {
             res.status(400)
@@ -119,14 +119,13 @@
     })
 
       if (user && passwordIsCorrect) {
-               const {_id, name, email, photo, phone, bio} = user
+               const {_id, first_name, last_name, email, notes} = user
             res.status(200).json({
                 _id, 
-                name, 
+                first_name,
+                last_name, 
                 email, 
-                photo, 
-                phone, 
-                bio,
+                notes,
                 token
         });
       } else {
@@ -158,14 +157,14 @@
       const user = await User.findById(req.user._id)
 
         if (user) {
-            const {_id, name, email, photo, phone, bio} = user;
+            const {_id, first_name, last_name, email, notes, } = user;
             res.status(200).json({
                 _id, 
-                name, 
+                first_name, 
+                last_name,
                 email, 
-                photo, 
-                phone, 
-                bio
+                notes,
+                
         });
         } else {
             res.status(400)
@@ -197,22 +196,21 @@
     const user = await User.findById(req.user._id)
 
         if (user) {
-          const {name, email, photo, phone, bio} = user;
+          const {first_name, last_name, email, notes} = user;
           user.email = email;
-          user.name = req.body.name || name;
-          user.phone = req.body.phone || phone;
-          user.bio = req.body.bio || bio;
-          user.photo = req.body.photo || photo;
+          user.first_name = req.body.first_name || first_name;
+          user.last_namee = req.body.last_name || last_name;
+          user.notes = req.body.notes || notes;
+      
 
           const updatedUser = await user.save()
             res.status(200).json({ 
                 message: "ACCOUNT UPDATED SUCCESFULLY",
                 _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                photo: updatedUser.photo,
-                phone: updatedUser.phone,
-                bio: updatedUser.bio,
+                name: updatedUser.first_name,
+                email: updatedUser.last_name,
+                photo: updatedUser.email,
+                phone: updatedUser.notes
 
         })
         } else {
@@ -368,7 +366,7 @@ const resetPassword = asyncHandler (async(req, res) => {
 
 
  module.exports = {
-    registerUser,
+    createUser,
     loginUser,
     logout,
     getUser,
