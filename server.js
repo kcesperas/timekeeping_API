@@ -3,9 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const userRoute = require ("./routes/user.routes");
-const roleRoute = require ("./routes/role.routes");
-const taskboardRoute = require ("./routes/taskboard.routes")
+const userRoute = require ("./routes/User");
+const taskboardRoute = require ("./routes/Taskboard")
 const errorHandler = require("./middleware/errorHandler");
 const cookieParser = require("cookie-parser");
 
@@ -31,7 +30,6 @@ app.use(errorHandler);
 
 //router middleware
 app.use("/api/users", userRoute);
-app.use("/api/roles", roleRoute);
 app.use("/api/taskboard", taskboardRoute);
 
 

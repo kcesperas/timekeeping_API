@@ -1,5 +1,5 @@
 const express = require("express");
-const { createEmployee_details, getEmployee_details, updateEmployee_details, deleteEmployee_details } = require("../controllers/employee_details.controller");
+const { createEmployee_details, getEmployee_details, updateEmployee_details, deleteEmployee_details } = require("../controllers/EmployeeDetails");
 const router = express.Router();
 
 

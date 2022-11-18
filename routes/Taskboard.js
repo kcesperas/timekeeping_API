@@ -1,5 +1,5 @@
 const express = require("express");
-const { createTaskboard, getTaskboard, updateTaskboard, deleteTaskboard } = require("../controllers/taskboard.controller");
+const { createTaskboard, getTaskboard, updateTaskboard, deleteTaskboard } = require("../controllers/taskboard");
 const router = express.Router();
 
 
