@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     first_name: {
         type: String,
     },
@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
   )  
 
     //encrypt password
-    userSchema.pre("save", async function(next) {
+    UserSchema.pre("save", async function(next) {
         if(!this.isModified("password")) {
             return next()
         } 
@@ -51,5 +51,5 @@ const userSchema = mongoose.Schema({
     })
 
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = User;

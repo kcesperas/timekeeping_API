@@ -14,6 +14,7 @@
     //create USER
 
  const createUser = asyncHandler ( async (req, res) => {
+  console.log("PASS")
       const {first_name, last_name, email, password} = req.body
       //validation
       if (!first_name ||!last_name || !email || !password) {     

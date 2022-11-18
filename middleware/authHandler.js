@@ -1,3 +1,4 @@
+ const ErrorResponse = require("../utils/errorResponse")
  const asyncHandler = require("express-async-handler");
  const User = require("../models/User");
  const jwt = require("jsonwebtoken")
@@ -13,7 +14,7 @@
     //Verify token
     const verified = jwt.verify(token, process.env.JWT_SECRET)
     //Get user ID from token
-    user = await User.findById(verified.id).select("-password")
+    User = await User.findById(verified.id).select("-password")
          if (!user) {
             res.status(401)
             throw new Error("Account not found")
@@ -26,4 +27,12 @@
     }
  });
 
- module.exports = protect;
+const authorize = (...roles) => (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+        return 
+        next(new ErrorResponse(403, "Unauthorized access"));
+    }
+    next();
+};
+
+ module.exports = protect, authorize;
