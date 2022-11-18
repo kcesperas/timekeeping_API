@@ -47,5 +47,5 @@ const timelogsSchema = mongoose.Schema({
     this.password = hashedPassword
     })
 
-const Timelogs = mongoose.model("Timelogs", TimelogsSchema);
+const Timelogs = mongoose.model("Timelogs", timelogsSchema);
 module.exports = Timelogs;
