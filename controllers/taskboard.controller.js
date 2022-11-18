@@ -1,5 +1,5 @@
  const asyncHandler = require("express-async-handler");
- const Taskboard = require("../models/taskboard.model");
+ const Taskboard = require("../models/Taskboard");
 
  
 

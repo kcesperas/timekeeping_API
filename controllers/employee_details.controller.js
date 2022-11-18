@@ -1,5 +1,5 @@
  const asyncHandler = require("express-async-handler");
- const Employee_details = require("../models/employee_details.model");
+ const Employee_details = require("../models/EmployeeDetails");
 
  
 
