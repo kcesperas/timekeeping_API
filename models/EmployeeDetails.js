@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 
-const employee_detailsSchema = mongoose.Schema({
+const EmployeeDetailsSchema = mongoose.Schema({
 
     employee_name: {
         type: String,
@@ -43,5 +43,5 @@ const employee_detailsSchema = mongoose.Schema({
 );
 
 
-const Employee_details = mongoose.model("Employee_details", employee_detailsSchema);
-module.exports = timelogs;
+const EmployeeDetails = mongoose.model("EmployeeDetails", EmployeeDetailsSchema);
+module.exports = EmployeeDetails;
