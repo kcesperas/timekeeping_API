@@ -89,16 +89,22 @@
       const taskboard = await Taskboard.findById(id);
 
         if (taskboard) {
-          const {name, notes} = taskboard
-          role.name = req.body.name || name;
-          role.notes = req.body.notes || notes;
+          const {subject, content, status, assigned_to, notes} = taskboard
+          taskboard.subject = req.body.subject || subject;
+          taskboard.content = req.body.content || content;
+          taskboard.status = req.body.status || status;
+          taskboard.assigned_to = req.body.assigned_to || assigned_to;
+          taskboard.notes = req.body.notes || notes;
       
 
           const updatedTaskboard = await taskboard.save()
             res.status(200).json({ 
                 message: "Taskboard DATA UPDATED SUCCESFULLY",
                 _id: updatedTaskboard._id,
-                name: updatedTaskboard.name, 
+                subject: updatedTaskboard.subject,
+                content: updatedTaskboard.content,
+                status: updatedTaskboard.status,
+                assigned_to: updatedTaskboard.assigned_to, 
                 notes: updatedTaskboard.notes
 
         })
@@ -117,9 +123,9 @@
 
         const deleteTaskboard = asyncHandler (async(req, res) => {
         let { id } = req.params;
-        let resp = await Role.findByIdAndUpdate(id, { isDeleted: true });
+        let resp = await Taskboard.findByIdAndUpdate(id, { isDeleted: true });
         res.status(200)
-        .json({message: "ROLE DELETED SUCCESFULLY"})
+        .json({message: "TASKBOARD DELETED SUCCESFULLY"})
      });
 
 

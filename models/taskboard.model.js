@@ -22,8 +22,7 @@ const taskboardSchema = mongoose.Schema({
         
     },
     assigned_to:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users"
+        type: String,
     },
     notes: {
         type: String
